@@ -8,8 +8,8 @@ import axios from 'axios'
 Vue.prototype.$axios = axios//全局使用axios
 
 /* 使用ui库 */
-import { Radio,RadioGroup,Message,Popover,DatePicker } from 'element-ui';
-Vue.use(Radio).use(RadioGroup).use(Popover).use(DatePicker)
+import { Radio,RadioGroup,Message,Popover,DatePicker,Select,Option } from 'element-ui';
+Vue.use(Radio).use(RadioGroup).use(Popover).use(DatePicker).use(Select).use(Option)
 Vue.prototype.$message = Message;
 
 

@@ -87,7 +87,6 @@
     padding: 10px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
   }
   .type .item{
     padding: 2px 15px;

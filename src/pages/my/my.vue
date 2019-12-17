@@ -5,12 +5,16 @@
         <div>
           <img src="./img/introduct.jpg">
         </div>
-        <span class="setInfo">修改资料</span>
+        <router-link class="setInfo" :to="{name:'myinfo'}">
+          <span >修改资料</span>
+        </router-link>
       </div>
 
       <div class="name">
         <span>Hanniv</span>
-        <i class="el-icon-edit-outline"></i>
+        <router-link :to="{name:'myinfo'}">
+          <i class="el-icon-edit-outline"></i>
+        </router-link>
       </div>
 
       <div class="social">
@@ -109,7 +113,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    cursor: default;
   }
   .self .social .item .type{
     color: rgba(104,48,213,0.7);

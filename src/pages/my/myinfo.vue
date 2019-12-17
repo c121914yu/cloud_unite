@@ -106,10 +106,11 @@
   .myinfo{
     background: #FFFFFF;
     border-radius: 10px;
+    position: relative;
   }
 
   .myinfo .baseInfo{
-    padding: 10px 30px;
+    padding: 10px 20px;
   }
   .myinfo .baseInfo .title{
     border-bottom: 1px solid #d7d7d7;
@@ -208,6 +209,7 @@
     margin-left: 20px;
   }
   .myinfo .safeInfo .relevance img{
+    width: 90%;
     margin-top: 10px;
   }
 

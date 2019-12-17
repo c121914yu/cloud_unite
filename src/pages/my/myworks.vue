@@ -16,7 +16,7 @@
           <span :class="word.applied ? 'applied' : 'unapply '">{{word.applied ? '已上链':'未上链'}}</span>
           <span style="flex: 1;"></span>
           <i class="el-icon-view readed">{{word.readed}}</i>
-          <span class="icon iconfont liked">&#xe600; {{word.liked}}</span>
+          <span class="icon iconfont liked">&#xe600;{{word.liked}}</span>
         </div>
       </div>
     </div>

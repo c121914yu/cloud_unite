@@ -6,16 +6,46 @@
         <span class="remark">注：标有<span style="color: #e91e1e;">&ensp;*&ensp;</span>的为必填项</span>
       </header>
       <div class="upcover">
-        <img src="./img/upcover.jpg">
+        <div class="cover">
+          <div v-if="work.cover===''" class="none-cover">
+            <img src="./img/add.png"/>
+            <p style="color: #505050;margin-top: 10px;">上传封面</p>
+            <p class="remark" style="margin-top: 5px;">支持jpg/png格式,小于10M</p>
+          </div>
+          <img v-else :src="work.cover">
+        </div>
         <div class="content">
-          <input class="input" type="text" placeholder="请输入作品名称">
-          <textarea class="input" rows="20"
-            placeholder="请输入作品说明"/>
+          <el-select
+            class="check-kind"
+            placeholder="请选择作品类型"
+            filterable
+            v-model="work.kind"
+          >
+            <el-option
+              v-for="(item,index) in kinds"
+              :key="index"
+              :label="item.text"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+          <input
+            type="text"
+            class="name"
+            v-model="work.name"
+            placeholder="输入作品名称"
+          >
+          <textarea
+            class="introduction"
+            rows="3"
+            placeholder="输入作品说明"
+            v-model="work.introduction"
+          />
         </div>
       </div>
     </div>
 
-    <div class="info content">
+    <div v-if="work.kind!=2" class="info content">
       <header>
         <span>内容界面</span>
         <span class="remark">注：不要在图片上放置商业推广信息（案例信息除外），长按拖动调整顺序</span>
@@ -26,12 +56,22 @@
           v-for="(img,index) in imgs"
           :key="index"
         >
-          <p class="explain">添加说明</p>
-          <img class="add" src="./img/add.png">
+          <el-popover
+            class="explain"
+            width="400"
+            trigger="click"
+          >
+            <p style="font-size: 13px;color: #FFFFFF;line-height: 1.8;" slot="reference">添加说明</p>
+            <div class="page-introduction">
+              <input type="text" placeholder="输入该图片/视频说明"/>
+              <div class="sure">确定</div>
+            </div>
+          </el-popover>
+          <img class="user-content" src="./img/introduct.jpg">
         </div>
         <div class="img">
           <img class="add" src="./img/add.png">
-          <p>上传图片/视频</p>
+          <p class="remark">上传图片/视频</p>
         </div>
       </div>
     </div>
@@ -96,6 +136,16 @@
   export default{
     data(){
       return{
+        work : {
+          cover : ''
+        },
+
+				kinds : [
+         {value:0,text:'图片'},
+         {value:1,text:'视频'},
+         {value:2,text:'3D模型'},
+        ],
+
         imgs : [
           {src:'./img/add.png'},
           {src:'./img/add.png'},
@@ -146,34 +196,56 @@
     border-bottom: 1px solid #c8c8c8;
   }
   .upworks .info .remark{
-    font-size: 13px;
-    color: #c8c8c8;
     margin-left: 10px;
   }
+
   .upworks .info .upcover{
     padding: 20px 10px;
     display: flex;
+  }
+  .upworks .info .upcover .cover{
+    width: 240px;
+    height: 180px;
+    position: relative;
+    cursor: pointer;
+  }
+  .upworks .info .upcover .cover img{
+    width: 100%;
+    height: 100%;
+    margin-top: 40px;
+  }
+  .upworks .info .upcover .cover .none-cover{
+    background-color: rgba(235,235,235,0.7);
+    width: 100%;
+    height: 100%;
+    border: 1px solid #DCDFE6;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .upworks .info .upcover .cover .none-cover img{
+    width: 50px;
+    height: 50px;
+    opacity: 0.5;
   }
   .upworks .info .upcover .content{
     font-size: 16px;
     margin: 10px 0 10px 15px;
     flex: 1;
+    position: relative;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
   }
-  .upworks .info .upcover .content .input{
-    font-size: 16px;
-    background: #F4F4F4;
-    padding: 5px;
-    border-radius: 5px;
-    padding-left: 5px;
-    outline: none;
-    border: 1px solid #d6d5d7;
+  .upworks .info .upcover .content .check-kind{
+    width: 40%;
   }
-  .upworks .info .upcover .content textarea{
+  .upworks .info .upcover .content .name{
     margin-top: 10px;
-    max-height: 150px;
-    resize:none
+  }
+  .upworks .info .upcover .content .introduction{
+    margin-top: 10px;
   }
 
   .upworks .content{
@@ -186,12 +258,12 @@
   }
   .upworks .content .page .img{
     font-size: 14px;
-    background: #F4F4F4;
+    background: rgba(235,235,235,0.7);
     width: 120px;
     height: 120px;
-    border: 1px solid #d6d5d7;
     border-radius: 5px;
     margin: 10px 0 0 10px;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -203,19 +275,38 @@
     width: 50px;
     margin-top: 20px;
     margin-bottom: 10px;
-    opacity: 0.6;
+    opacity: 0.5;
+  }
+  .upworks .content .page .img .user-content{
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
   }
   .upworks .content .page .img .explain{
-    background: rgba(214,213,215,0.5);
-    color: #FFFFFF;
+    background: rgba(182,182,182,0.7);
     width: 120px;
     text-align: center;
-    line-height: 1;
-    padding: 3px 0;
     position: absolute;
-    margin-top: 100px;
+    bottom: 0;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
+  }
+  .page-introduction input{
+    height: 30px;
+    width: 90%;
+    margin-left: 5%;
+  }
+  .page-introduction .sure{
+    text-align: center;
+    letter-spacing:2px;
+    background: #6830d5;
+    color: #FFF;
+    width: 20%;
+    border-radius: 10px;
+    margin-top: 5px;
+    margin-left: 40%;
+    padding: 0 10px;
+    cursor: pointer;
   }
 
   .upworks .lable{
