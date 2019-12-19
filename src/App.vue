@@ -96,6 +96,14 @@ export default {
     box-shadow: 0 0 10px #a9a9a9;
     border: none;
   }
+  /* 日期选择器 */
+  .el-date-table td.current:not(.disabled) span{
+    color: #F4F4F4;
+    background-color: rgba(104,48,213,0.7);
+  }
+  .el-date-table td.today span,.el-date-table td.available:hover,.el-date-table td span:active{
+    color: #6830d5;
+  }
 
   .mask{
   	width:100%;

@@ -1,5 +1,6 @@
 <template>
   <div class="myinfo">
+    <!-- 基本信息 -->
     <div class="baseInfo">
       <div class="title">
         <span>基本信息</span>
@@ -12,12 +13,12 @@
 
       <div class="inputInfo">
         <span>个性签名:</span>
-        <input type="text" style="flex: 1;max-width: 60%;"
+        <input type="text" style="flex: 1;max-width: 70%;"
           v-model="userInfo.individuality" placeholder="展示你的个性">
       </div>
 
       <div class="sex">
-        <span style="margin-right: 20px;">性别:</span>
+        <span style="margin-right: 50px;">性别:</span>
         <el-radio-group v-model="sex">
           <el-radio label='man'>男</el-radio>
           <el-radio label='woman'>女</el-radio>
@@ -25,7 +26,7 @@
       </div>
 
       <div class="birthday">
-        <span style="margin-right: 15px;">生日:</span>
+        <span style="width: 90px;">生日:</span>
         <el-date-picker
           v-model="userInfo.birthday"
           :editable="false"
@@ -36,7 +37,7 @@
       </div>
 
       <div class="region">
-        <span style="margin-right: 15px;">地区:</span>
+        <span style="width: 90px;">地区:</span>
         <div class="checkReg">选择地区</div>
       </div>
 
@@ -47,17 +48,21 @@
       </div>
     </div>
 
+    <!-- 安全信息 -->
     <div class="safeInfo">
-      <p>安全信息</p>
+      <header>
+        <span>安全信息</span>
+        <span class="remark">*用于找回账户</span>
+      </header>
 
       <div class="inputInfo">
         <span>手机号:</span>
-        <div>{{userInfo.phone}}</div>
+        <input style="background-color: rgba(104,48,213,0.7);" type="number" disabled :value="userInfo.phone"/>
       </div>
 
       <div class="inputInfo">
         <span>密&emsp;码:</span>
-        <input type="password" v-model="psw" placeholder="**********">
+        <input type="password" v-model="userInfo.psw" placeholder="**********">
         <div class="btn">修改</div>
       </div>
 
@@ -66,13 +71,37 @@
         <input type="text" v-model="userInfo.email" placeholder="绑定你的邮箱">
         <div class="btn">修改</div>
       </div>
+    </div>
 
-      <div class="relevance">
-        <div>账号关联</div>
-        <div class="remark">——第三方账号关联GenDoo</div>
-
-        <img src="./img/relative.png">
+    <div class="identity">
+      <div class="title">
+        <span>身份验证</span>
+        <span class="condition">未审核</span>
+        <span class="btn">提交</span>
+        <span class="remark">*审核后不会显示相关信息，如需更改直接添加信息后点击提交</span>
       </div>
+
+      <div class="inputInfo">
+        <span>真实姓名:</span>
+        <input type="text" v-model="identity.name" placeholder="输入您的真实姓名">
+      </div>
+
+      <div class="inputInfo">
+        <span>身份证号码:</span>
+        <input type="text" v-model="identity.id" placeholder="输入您的身份证号码">
+      </div>
+
+      <p style="margin-top: 5px;">手持身份证正面照：</p>
+      <div class="id-img">
+        <img src="./img/add.png"/>
+        <p>手持身份证正面照</p>
+      </div>
+    </div>
+
+    <div class="relevance">
+      <div>账号关联</div>
+      <div class="remark">——第三方账号关联GenDoo</div>
+      <img src="./img/relative.png">
     </div>
   </div>
 </template>
@@ -83,7 +112,12 @@
       return{
         userInfo : {
           phone : '15677751219',
-          birthday  : ''
+          birthday  : '',
+          psw : ''
+        },
+        identity : {
+          name : '',
+          id : ''
         },
         sex : 'man'
       }
@@ -92,42 +126,55 @@
 </script>
 
 <style>
+  .myinfo{
+    background: #FFFFFF;
+    border-radius: 10px;
+    position: relative;
+    padding: 10px 20px;
+  }
   .myinfo input{
-    border: none;
-    outline: none;
-    background: rgba(104,48,213,0.4);
+    letter-spacing:1px;
+    background-color: rgba(104,48,213,0.4);
     color: #F4F4F4;
-    font-size: 17px;
+    border: none;
   }
   .myinfo input::-webkit-input-placeholder {
     font-size: 13px;
     color: #dadada;
   }
-  .myinfo{
-    background: #FFFFFF;
-    border-radius: 10px;
-    position: relative;
+
+  /* 公共按键样式*/
+  .myinfo .btn{
+    color: #F4F4F4;
+    background: rgba(104,48,213,0.5);
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  .myinfo .btn:hover{
+    background: rgba(104,48,213,1);
   }
 
-  .myinfo .baseInfo{
-    padding: 10px 20px;
-  }
-  .myinfo .baseInfo .title{
+  .myinfo .title{
     border-bottom: 1px solid #d7d7d7;
     padding-bottom: 10px;
     padding-left: 5px;
     margin-bottom: 5px;
   }
 
-  .myinfo .baseInfo .inputInfo{
+  .myinfo .inputInfo{
+    margin: 5px;
     padding: 10px 0;
     display: flex;
     align-items: center;
   }
-  .myinfo .baseInfo .inputInfo input{
+  .myinfo .baseInfo .inputInfo span{
+    width: 90px;
+  }
+  .myinfo .inputInfo input{
     height: 30px;
     padding-left: 10px;
-    margin-left: 15px;
     border-radius: 5px;
   }
 
@@ -141,10 +188,16 @@
     align-items: center;
   }
   .myinfo .baseInfo .birthday .el-icon-date{
-    color: #dcdcdc;
+    color: #f3f3f3;
   }
   .myinfo .baseInfo .birthday .el-input--prefix .el-input__inner{
     cursor: pointer;
+    width: 200px;
+  }
+  .myinfo .baseInfo .birthday .el-input--suffix .el-input__inner{
+    padding-right: 5px;
+  }
+  .myinfo .baseInfo .birthday .el-date-editor.el-input, .el-date-editor.el-input__inner{
     width: 200px;
   }
 
@@ -163,21 +216,11 @@
     cursor: pointer;
   }
 
-  .myinfo .safeInfo{
-    padding: 5px 30px;
-  }
-  .myinfo .safeInfo p{
+  .myinfo .safeInfo header{
     border-bottom: 1px solid #d7d7d7;
-    border-top: 1px solid #d7d7d7;;
     padding: 5px 5px;
   }
 
-  .myinfo .safeInfo .inputInfo{
-    padding: 10px 0;
-    display: flex;
-    align-items: center;
-    position: relative;
-  }
   .myinfo .safeInfo .inputInfo div{
     font-size: 17px;
     background: rgba(104,48,213,0.4);
@@ -193,36 +236,57 @@
     border-radius: 5px;
   }
   .myinfo .safeInfo .inputInfo .btn{
-    position: absolute;
-    right: 10px;
+    margin-left: 10px;
   }
   .myinfo .safeInfo .inputInfo .btn:hover{
-    background: rgba(104,48,213,0.7);
+    background: #6830d5;
   }
 
-  .myinfo .safeInfo .relevance{
-    margin-top: 30px;
+  .myinfo .identity{
+    margin-top: 15px;
   }
-  .myinfo .safeInfo .relevance .remark{
-    font-size: 15pxc;
-    color: #888787;
-    margin-left: 20px;
+  .myinfo .identity .inputInfo span{
+    width: 100px;
   }
-  .myinfo .safeInfo .relevance img{
-    width: 90%;
+  .myinfo .identity .condition{
+    font-size: 13px;
+    color: #e91e1e;
+    margin: 0 5px;
+  }
+ .myinfo .identity .id-img{
+    background-color: rgba(104,48,213,0.3);
+    width: 320px;
+    height: 180px;
+    border-radius: 10px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+  }
+  .myinfo .identity .id-img img{
+    width: 50px;
+    height: 50px;
+    margin-top: 40px;
+    opacity: 0.8;
+  }
+  .myinfo .identity .id-img p{
+    color: #505050;
     margin-top: 10px;
   }
 
-  /* 公共按键样式*/
-  .myinfo .btn{
-    color: #F4F4F4;
-    background: rgba(104,48,213,0.5);
-    padding: 5px 15px;
-    border-radius: 5px;
-    margin-left: 10px;
-    cursor: pointer;
+  .myinfo  .relevance{
+    margin-top: 10px;
+    padding-left: 5px;
   }
-  .myinfo .btn:hover{
-    background: rgba(104,48,213,0.7);
+  .myinfo  .relevance .remark{
+    font-size: 15pxc;
+    color: #888787;
+    border-bottom: 1px solid #d7d7d7;
+    padding: 5px 20px;
+  }
+  .myinfo  .relevance img{
+    width: 90%;
+    margin-top: 10px;
   }
 </style>

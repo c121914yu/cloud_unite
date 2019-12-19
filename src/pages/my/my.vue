@@ -6,7 +6,8 @@
           <img src="./img/introduct.jpg">
         </div>
         <router-link class="setInfo" :to="{name:'myinfo'}">
-          <span >修改资料</span>
+          <div>未认证</div>
+          <span>修改资料</span>
         </router-link>
       </div>
 
@@ -132,14 +133,21 @@
   }
   .self .avatar .setInfo{
     font-size: 15px;
-    color: #F4F4F4;
-    background: rgba(104,48,213,0.7);
-    padding: 5px;
-    border-radius: 5px;
-    margin-top: 10px;
+    text-align: center;
     cursor: pointer;
   }
-  .self .avatar .setInfo:hover{
+  .self .avatar .setInfo div{
+    color: #6830d5;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  .self .avatar .setInfo span{
+    color: #F4F4F4;
+    background: rgba(104,48,213,0.7);
+    border-radius: 5px;
+    padding: 5px;
+  }
+  .self .avatar .setInfo span:hover{
     background: #6830d5;
   }
 
