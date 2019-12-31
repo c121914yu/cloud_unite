@@ -106,4 +106,18 @@
   .navigation .router:hover{
     color: #8500ff;
   }
+
+  @media screen and (max-width: 1000px){
+    .navigation .logo{
+      margin-left: 5px;
+      width: 150px;
+      height: 30px;
+    }
+    .navigation .nav{
+      margin-left: 5px;
+    }
+    .navigation .avatar{
+      display: none;
+    }
+  }
 </style>

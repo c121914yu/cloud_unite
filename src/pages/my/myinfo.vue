@@ -4,7 +4,7 @@
     <div class="baseInfo">
       <div class="title">
         <span>基本信息</span>
-        <span class="btn">保存</span>
+        <span class="btn" @click="save">保存</span>
       </div>
       <div class="inputInfo">
         <span>用户昵称:</span>
@@ -19,7 +19,7 @@
 
       <div class="sex">
         <span style="margin-right: 50px;">性别:</span>
-        <el-radio-group v-model="sex">
+        <el-radio-group v-model="userInfo.sex">
           <el-radio label='man'>男</el-radio>
           <el-radio label='woman'>女</el-radio>
         </el-radio-group>
@@ -57,19 +57,19 @@
 
       <div class="inputInfo">
         <span>手机号:</span>
-        <input style="background-color: rgba(104,48,213,0.7);" type="number" disabled :value="userInfo.phone"/>
+        <input style="background-color: rgba(104,48,213,0.7);" type="number" disabled :value="userInfo.safeInfo.phone"/>
       </div>
 
       <div class="inputInfo">
         <span>密&emsp;码:</span>
-        <input type="password" v-model="userInfo.psw" placeholder="**********">
-        <div class="btn">修改</div>
+        <input type="password" v-model="userInfo.safeInfo.psw" placeholder="**********">
+        <div class="btn" @click="change('psw')">修改</div>
       </div>
 
       <div class="inputInfo">
         <span>邮&emsp;箱:</span>
-        <input type="text" v-model="userInfo.email" placeholder="绑定你的邮箱">
-        <div class="btn">修改</div>
+        <input type="text" v-model="userInfo.safeInfo.email" placeholder="绑定你的邮箱">
+        <div class="btn" @click="change('email')">修改</div>
       </div>
     </div>
 
@@ -92,10 +92,11 @@
       </div>
 
       <p style="margin-top: 5px;">手持身份证正面照：</p>
-      <div class="id-img">
+      <div class="id-img" v-if="!identity.img">
         <img src="./img/add.png"/>
         <p>手持身份证正面照</p>
       </div>
+      <img class="id-img" v-else src="../../assets/logo.png">
     </div>
 
     <div class="relevance">
@@ -111,17 +112,51 @@
     data(){
       return{
         userInfo : {
-          phone : '15677751219',
+          name : '',
+          individuality : '',
+          sex : 'man',
           birthday  : '',
-          psw : ''
+          region : '',
+          unit : '',
+          safeInfo : {
+            phone : '15677751219',
+            email : '545436317@qq.com',
+            psw : ''
+          }
         },
         identity : {
           name : '',
-          id : ''
+          id : '',
+          img : ''
         },
-        sex : 'man'
       }
-    }
+    },
+		methods:{
+			save(){
+				if(this.userInfo.name === '')
+          global.Toast('请填写用户昵称',this)
+        console.log(this.userInfo)
+			},
+      change(type){
+        let data
+        let url
+        if(type === 'psw'){//暂存至后台，发送一个链接给用户，点击链接后才会修改
+          data = {
+            phone : this.userInfo.safeInfo.phone,
+            psw : this.userInfo.safeInfo.psw,
+          }
+          url = 'psw'
+        }
+        else{
+          data = {
+            phone : this.userInfo.safeInfo.phone,
+            email : this.userInfo.safeInfo.email,
+          }
+          url = 'email'
+          console.log('修改邮箱' + data)
+        }
+      }
+		}
   }
 </script>
 
@@ -139,7 +174,6 @@
     border: none;
   }
   .myinfo input::-webkit-input-placeholder {
-    font-size: 13px;
     color: #dadada;
   }
 

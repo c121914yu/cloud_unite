@@ -79,7 +79,12 @@
 
 <style>
   .my{
-    padding: 10px 10%;
+    padding: 10px 5%;
+  }
+  @media screen and (max-width: 950px){
+    .my{
+      padding: 10px;
+    }
   }
 
   .self{
@@ -177,9 +182,10 @@
     border-left: 4px solid #6830d5;
     transition: 0.2s all linear;
   }
-
   .my .main .body{
     margin-left: 20px;
     flex: 1;
   }
+
+
 </style>

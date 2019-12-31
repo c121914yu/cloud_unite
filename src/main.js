@@ -8,9 +8,13 @@ import axios from 'axios'
 Vue.prototype.$axios = axios//全局使用axios
 
 /* 使用ui库 */
-import { Radio,RadioGroup,Message,Popover,DatePicker,Select,Option } from 'element-ui';
+import { Radio,RadioGroup,Message,Popover,DatePicker,Select,Option,MessageBox } from 'element-ui';
 Vue.use(Radio).use(RadioGroup).use(Popover).use(DatePicker).use(Select).use(Option)
 Vue.prototype.$message = Message;
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$confirm = MessageBox.confirm;
+Vue.prototype.$prompt = MessageBox.prompt;
 
 
 /* eslint-disable no-new */

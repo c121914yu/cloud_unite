@@ -9,16 +9,21 @@
 
 <script>
 import Nav from './pages/nav/nav'
-
 export default {
   components:{
     Nav
-  }
+  },
+}
+
+global.Toast = (text,that) => {
+  that.$alert(text, '提示', {
+    confirmButtonText: '确认'
+  })
 }
 </script>
 
 <style>
-  html, body { min-width: 1100px;}
+  html, body { min-width: 800px;}
   *{
     font-size: 17px;
     padding: 0;
@@ -95,6 +100,15 @@ export default {
     border-radius: 10px;
     box-shadow: 0 0 10px #a9a9a9;
     border: none;
+  }
+  /* alert框 */
+  .el-button--primary,.el-button--primary:focus{
+    background-color: rgba(104,48,213,0.7);
+    border-color: rgba(104,48,213,0.7);
+  }
+  .el-button--primary:hover{
+    background-color: rgba(104,48,213,1);
+    border-color: rgba(104,48,213,1);
   }
   /* 日期选择器 */
   .el-date-table td.current:not(.disabled) span{

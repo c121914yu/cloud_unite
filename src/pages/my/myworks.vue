@@ -197,4 +197,10 @@
     padding: 5.8px 0;
     cursor: pointer;
   }
+
+  @media screen and (max-width: 950px){
+    .myworks .words .word{
+      width: 30%;
+    }
+  }
 </style>
