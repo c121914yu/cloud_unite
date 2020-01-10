@@ -15,9 +15,24 @@ import upworks from '../pages/my/upworks'
 import myworks from '../pages/my/myworks'
 import myinfo from '../pages/my/myinfo'
 
+import user from '../pages/login/user.vue'
+import login from '../pages/login/login.vue'
+import findPsw from '../pages/login/findPsw.vue'
+import register from '../pages/login/register.vue'
+
 export default new Router({
   routes: [
-    {path:'*',redirect:'/home'},//错误地址重新定向
+    {path: '*',redirect:'/home'},//错误地址重新定向
+
+    {path: '/login',name: 'user',component:user,
+      children:[
+        {path: '/login',name: 'login',component:login},
+        {path: '/login/findPsw',name: 'findPsw',component:findPsw},
+        {path: '/login/register',name: 'register',component:register},
+      ]
+    },
+
+
     {path: '/home',name: 'home',component: home},
 
     {path: '/protect',name: 'protect',component: protect},

@@ -7,9 +7,28 @@ Vue.config.productionTip = false
 import axios from 'axios'
 Vue.prototype.$axios = axios//全局使用axios
 
+import './assets/icon/iconfont.css'//引入图标库
+
 /* 使用ui库 */
-import { Radio,RadioGroup,Message,Popover,DatePicker,Select,Option,MessageBox } from 'element-ui';
-Vue.use(Radio).use(RadioGroup).use(Popover).use(DatePicker).use(Select).use(Option)
+import '../static/element/index.css'
+import ElementUI from 'element-ui'
+
+import {
+  Radio,
+  RadioGroup,
+  Message,
+  Popover,
+  DatePicker,
+  Select,
+  Option,
+  MessageBox
+} from 'element-ui';
+Vue.use(Radio)
+   .use(RadioGroup)
+   .use(Popover)
+   .use(DatePicker)
+   .use(Select)
+   .use(Option)
 Vue.prototype.$message = Message;
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;

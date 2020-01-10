@@ -55,6 +55,7 @@
 	export default{
 		data(){
       return{
+        UserInfo : {},
         socials : [
           {type:'获赞',amount:0},
           {type:'关注',amount:0},
@@ -73,6 +74,20 @@
       currentTab(index){
         console.log(index)
       }
+    },
+    beforeRouteEnter(to,from,next) {
+      //进入管理界面时先判断登录
+      let UserInfo = JSON.parse(localStorage.getItem("manager"))
+      next(that => {
+        if(UserInfo){
+          //判断登录信息
+          that.UserInfo = UserInfo
+        }
+        else{
+          global.Toast(that,'请先登录')
+          global.Router(that,'login')
+        }
+      })
     }
 	}
 </script>

@@ -14,8 +14,9 @@ export default {
     Nav
   },
 }
+global.Router = (that,name) => that.$router.push({name:name})
 
-global.Toast = (text,that) => {
+global.Toast = (that,text) => {
   that.$alert(text, '提示', {
     confirmButtonText: '确认'
   })
@@ -23,7 +24,9 @@ global.Toast = (text,that) => {
 </script>
 
 <style>
-  html, body { min-width: 800px;}
+  html, body {
+    min-width: 800px;
+  }
   *{
     font-size: 17px;
     padding: 0;
@@ -31,6 +34,7 @@ global.Toast = (text,that) => {
     text-decoration: none;
     box-sizing: border-box;
     outline: none;
+    position: relative;
   }
   #app {
     cursor: default;
@@ -67,32 +71,28 @@ global.Toast = (text,that) => {
     font-size: 14px;
     color: #C0C4CC;
   }
+  /* 通用按键 */
+  .btn{
+    color: #F4F4F4;
+    background-color: rgba(104,48,213,0.9);
+    border-radius: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  .btn:hover{
+    background-color: #6830d5;
+    box-shadow: 0 0 5px #6830d5;
+  }
+  /* 备注样式 */
   .remark{
     font-size: 13px;
     color: #C0C4CC;
   }
 
   /* UI库颜色修改*/
-  /* 单选框颜色 */
-  .el-radio__input.is-checked+.el-radio__label{
-    color: #6830d5;
-  }
-  .el-radio__input.is-checked .el-radio__inner{
-    border:none;
-    background: rgba(104,48,213,0.7);
-  }
-  .el-radio__inner:hover{
-    border-color: rgba(104,48,213,0.7);
-  }
   /* select样式 */
   .el-select .el-input__inner{
     border-radius: 10px;
-  }
-  .el-select .el-input__inner:focus,.el-select .el-input.is-focus .el-input__inner{
-    border-color: #6830d5;
-  }
-  .el-select-dropdown__item.selected{
-    color: #6830d5;
   }
   /* 气泡弹窗 */
   .el-popover{
@@ -100,23 +100,6 @@ global.Toast = (text,that) => {
     border-radius: 10px;
     box-shadow: 0 0 10px #a9a9a9;
     border: none;
-  }
-  /* alert框 */
-  .el-button--primary,.el-button--primary:focus{
-    background-color: rgba(104,48,213,0.7);
-    border-color: rgba(104,48,213,0.7);
-  }
-  .el-button--primary:hover{
-    background-color: rgba(104,48,213,1);
-    border-color: rgba(104,48,213,1);
-  }
-  /* 日期选择器 */
-  .el-date-table td.current:not(.disabled) span{
-    color: #F4F4F4;
-    background-color: rgba(104,48,213,0.7);
-  }
-  .el-date-table td.today span,.el-date-table td.available:hover,.el-date-table td span:active{
-    color: #6830d5;
   }
 
   .mask{

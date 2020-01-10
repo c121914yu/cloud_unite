@@ -134,7 +134,7 @@
 		methods:{
 			save(){
 				if(this.userInfo.name === '')
-          global.Toast('请填写用户昵称',this)
+          global.Toast(this,'请填写用户昵称')
         console.log(this.userInfo)
 			},
       change(type){
