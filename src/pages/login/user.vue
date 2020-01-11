@@ -63,7 +63,6 @@
     position: absolute;
   }
   .user .main .content input{
-    margin: 10px 0;
     width: 90%;
     height: 35px;
     background-color: rgba(235,235,235,0.7);

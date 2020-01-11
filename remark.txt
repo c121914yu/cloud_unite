@@ -1,6 +1,8 @@
 placehoder 14px #C0C4CC
 标红字体 #e91e1e
 紫色 #6830d5
+成功绿色 #67C23A
+错误红色 #F56C6C
 边框颜色 #DCDFE6
 底部实线 #aeaeae
 focus颜色 #F5F7FA

@@ -51,12 +51,11 @@
 
 <style>
   .getrand{
-    width: 90%;
+    width: 95%;
     display: flex;
     align-items: center;
   }
   .getrand input{
-    width: 130px;
     flex: 1;
   }
   .getrand .get-rand{
