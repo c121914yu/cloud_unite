@@ -21,8 +21,8 @@
         v-if="mode===0"
         class="psw"
       >
-        <input type="text" placeholder="用户名/手机号/邮箱">
-        <input type="password" placeholder="密码">
+        <input type="text" placeholder="用户名/手机号/邮箱" v-model="number">
+        <input type="password" placeholder="密码" v-model="password">
       </div>
 
       <!-- 短信登录 -->
@@ -30,7 +30,7 @@
         v-if="mode===1"
         class="phone"
       >
-        <input type="text" placeholder="手机号">
+        <input type="text" placeholder="手机号" v-model="phone">
         <getRand></getRand>
       </div>
 
@@ -66,6 +66,10 @@
     data(){
       return{
         mode : 1,
+        number : '',
+        password : '',
+        phone : '',
+        rand : '',
         save : false,
       }
     },
@@ -146,11 +150,11 @@
     cursor: pointer;
   }
   .login .assist .number-ctr{
+    color: #8b8b8b;
     display: flex;
     white-space: nowrap;
   }
   .login .assist .number-ctr .router{
-    color: #8b8b8b;
     font-size: 13px;
     cursor: pointer;
   }
