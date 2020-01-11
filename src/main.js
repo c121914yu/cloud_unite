@@ -11,7 +11,7 @@ import './assets/icon/iconfont.css'//引入图标库
 
 /* 使用ui库 */
 import '../static/element/index.css'
-import ElementUI from 'element-ui'
+// import ElementUI from 'element-ui'
 
 import {
   Radio,
