@@ -21,10 +21,8 @@
         v-if="mode===0"
         class="psw"
       >
-        <input type="text" placeholder="用户名/手机号">
+        <input type="text" placeholder="用户名/手机号/邮箱">
         <input type="password" placeholder="密码">
-        <div class="btn">登录</div>
-
       </div>
 
       <!-- 短信登录 -->
@@ -32,7 +30,11 @@
         v-if="mode===1"
         class="phone"
       >
+        <input type="text" placeholder="手机号">
+        <getRand></getRand>
       </div>
+
+      <div class="btn">登录</div>
     </div>
 
     <!-- 辅助登录功能 -->
@@ -59,21 +61,23 @@
 </template>
 
 <script>
+  import getRand from './getRand.vue'
   export default{
     data(){
       return{
-        mode : 0,
-        save : false
+        mode : 1,
+        save : false,
       }
+    },
+    components:{
+      getRand
     }
   }
 </script>
 
 <style scoped>
-  .login input{
-    width: 90%;
-    height: 35px;
-    background-color: rgba(235,235,235,0.7);
+  .login{
+    position: relative;
   }
 
   .login .nav{
@@ -90,7 +94,7 @@
     border-bottom: 2px solid #F4F4F4;
     cursor: pointer;
     text-align: center;
-    transition: all 0.5s ease-in-out;
+    transition: all 0.5s;
   }
   .login .nav span:hover{
     color: #6830d5;
@@ -106,17 +110,13 @@
   .login .input .btn{
     width: 200px;
     text-align: center;
+    margin: 0 auto;
   }
-  .login .input div{
+  .login .input .psw,.login .input .phone{
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  .login .input .psw{
-    margin-top: 10px;
-  }
-  .login .input .psw input{
-    margin: 10px 0;
   }
 
   .login .assist{
