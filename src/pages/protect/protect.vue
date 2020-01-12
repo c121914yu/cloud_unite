@@ -1,6 +1,6 @@
 <template>
   <div class="protect">
-    <router-link :to="{name:'works'}">
+    <router-link :to="{name:'my'}">
       <img src="./img/introduct.jpg">
     </router-link>
   </div>

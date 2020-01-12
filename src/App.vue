@@ -16,7 +16,7 @@ export default {
 }
 global.Router = (that,name) => that.$router.push({name:name})
 
-global.Toast = (that,text) => {
+global.Alert = (that,text) => {
   that.$alert(text, '提示', {
     confirmButtonText: '确认'
   })
@@ -37,9 +37,9 @@ global.Toast = (that,text) => {
     position: relative;
   }
   #app {
+    min-height: 100vh;
     cursor: default;
     background: #f4f4f4;
-    min-height: 100vh;
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -100,6 +100,21 @@ global.Toast = (that,text) => {
     border-radius: 10px;
     box-shadow: 0 0 10px #a9a9a9;
     border: none;
+  }
+  /* 图标颜色*/
+  .el-icon-error{
+    color: #F56C6C;
+    cursor: pointer;
+  }
+  .el-icon-success{
+    color: #67C23A;
+  }
+  .el-icon-circle-close{
+    color: #8b8b8b;
+    cursor: pointer;
+  }
+  .el-icon-circle-close:hover{
+    color: #6830d5;
   }
 
   .mask{

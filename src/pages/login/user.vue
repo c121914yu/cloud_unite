@@ -67,26 +67,26 @@
     height: 35px;
     background-color: rgba(235,235,235,0.7);
   }
-  .left-enter{
+  .user .main .left-enter{
     transform:translateX(350px);
     opacity: 0.5;
   }
-  .left-enter-to{
+  .user .main .left-enter-to{
     transform:translateX(0);
     opacity: 1;
   }
-  .left-enter-active{
+  .user .main .left-enter-active{
     transition: 1s;
   }
-  .left-leave{
+  .user .main .left-leave{
     transform:translateX(0);
     opacity: 1;
   }
-  .left-leave-to{
+  .user .main .left-leave-to{
     transform:translateX(-350px);
     opacity: 0.5;
   }
-  .left-leave-active{
+  .user .main.left-leave-active{
     transition: 1s;
   }
 </style>

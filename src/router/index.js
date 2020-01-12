@@ -24,11 +24,11 @@ export default new Router({
   routes: [
     {path: '*',redirect:'/home'},//错误地址重新定向
 
-    {path: '/login',name: 'user',component:user,
+    {path: '/login',component:user,
       children:[
-        {path: '/login',name: 'login',component:login},
-        {path: '/login/findPsw',name: 'findPsw',component:findPsw},
-        {path: '/login/register',name: 'register',component:register},
+        {path: '',name: 'login',component:login},
+        {path: 'findPsw',name: 'findPsw',component:findPsw},
+        {path: 'register',name: 'register',component:register},
       ]
     },
 

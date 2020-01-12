@@ -12,16 +12,25 @@
       v-for="(item,index) in inputs"
       :key="index"
     >
-			<input :type="item.type" :placeholder="item.placeholder" v-model="values[index]"
-        @blur="inspect(index)" @input="inputing(index)">
+			<input :class="item.remind === '' ? '' : 'err'"
+        :type="item.type"
+        :placeholder="item.placeholder"
+        v-model="values[index]"
+        @blur="InspectPsw(index)"
+        @change="AxiosInspect(index)"
+        @input="inputing(index)"
+      >
       <i v-if="item.icon" :class="item.icon" @click="clearText(index)"></i>
-      <i v-else-if="values[index]" class="el-icon-circle-close" @click="clearText(index)"></i>
+      <i v-else-if="values[index]" class="el-icon-circle-close" @mousedown="clearText(index)"></i>
       <p v-if="item.remind" class="remind">{{item.remind}}</p>
 		</div>
     <div class="input">
       <getRand></getRand>
     </div>
-    <div class="btn" @click="register">注册</div>
+    <div class="btn" @click="register">
+      {{btnText}}
+      <i v-if="registering" class="el-icon-loading"></i>
+    </div>
   </div>
 </template>
 
@@ -46,37 +55,89 @@
 					unitNumber : ''
 				},
 				SurePsw : '',
-        ready : false,
+        registering : false,
+        btnText : '注册'
 			}
 		},
 		methods:{
-      inspect(index){
-        
-        if(index === 2){//检测密码是否正确
-          if(this.values[index] === ''){
+      AxiosInspect(index){//检查用户名/手机号
+        let axiosInspect = (data) => {//请求
+          this.inputs[index].icon = 'el-icon-loading'
+          this.$axios.post('/cloud_unite/user/inspect',data)
+          .then(res => {
+            if(res.data.status === 200){
+              this.inputs[index].icon = 'el-icon-success'
+              this.inputs[index].remind = ''
+            }
+            else{
+              this.inputs[index].icon = 'el-icon-error'
+              this.inputs[index].remind = res.data.text
+            }
+          })
+          .catch(err => {
+            console.log(err)
             this.inputs[index].icon = 'el-icon-error'
-            this.inputs[index].remind = '密码不能为空'
+            this.inputs[index].remind = '网络错误'
+          })
+        }
+        if(this.values[index] != ''){
+          const value = this.values[index]
+          let letter = /[a-z]/i;  //必须含字母，防止与手机号重叠
+          let NumLet = /^[0-9a-zA-Z]+$/  //只含字母跟数字
+          let phone = /^[1][3,4,5,7,8,9][0-9]{9}$/
+          //检查用户名
+          if(index === 0){
+            if(!letter.test(value)){
+              this.inputs[index].icon = 'el-icon-error'
+              this.inputs[index].remind = '用户名需包含字母'
+            }
+            else if(!NumLet.test(value)){
+              this.inputs[index].icon = 'el-icon-error'
+              this.inputs[index].remind = '用户名只能含字母跟数字'
+            }
+            else
+              axiosInspect({
+                type : 'username',
+                text : value
+              })
           }
-          else if(this.values[index].length < 6){
-            this.inputs[index].icon = 'el-icon-error'
-            this.inputs[index].remind = '密码长度不能小于6位'
+          //检查手机号
+          else if(index === 1){
+      			if(!phone.test(value)){
+              this.inputs[index].icon = 'el-icon-error'
+              this.inputs[index].remind = '手机号格式错误'
+            }
+            else
+              axiosInspect({
+                type : 'phone',
+                text : value
+              })
           }
-          else{
-            this.inputs[index].icon = 'el-icon-success'
-            if(this.values[3] != ''){
-              if(this.values[2] != this.values[3]){
-                this.inputs[3].icon = 'el-icon-error'
-                this.inputs[3].remind = '两次密码不一致'
+
+        }
+      },
+      InspectPsw(index){
+        if(this.values[index] != ''){
+          //检查密码是否正确
+          if(index === 2){
+              if(this.values[index].length < 6){
+                this.inputs[index].icon = 'el-icon-error'
+                this.inputs[index].remind = '密码长度不能小于6位'
               }
               else{
-                this.inputs[3].icon = 'el-icon-success'
-                this.inputs[3].remind = ''
+                this.inputs[index].icon = 'el-icon-success'
+                if(this.values[3] != ''){//判断二次密码是否一致
+                  if(this.values[2] != this.values[3]){
+                    this.inputs[3].icon = 'el-icon-error'
+                    this.inputs[3].remind = '两次密码不一致'
+                  }
+                  else{
+                    this.inputs[3].icon = 'el-icon-success'
+                    this.inputs[3].remind = ''}}
               }
-            }
           }
-        }
-        else if(index === 3)//检测二次密码
-          if(this.values[3] != ''){
+          //检查二次密码
+          else if(index === 3){
             if(this.values[2] != this.values[3]){
               this.inputs[3].icon = 'el-icon-error'
               this.inputs[3].remind = '两次密码不一致'
@@ -84,19 +145,66 @@
             else
               this.inputs[3].icon = 'el-icon-success'
           }
+        }
       },
       inputing(index){
         this.inputs[index].icon = ''
         this.inputs[index].remind = ''
       },
       clearText(index){
-        this.values[index] = ''
-        this.inputs[index].icon = ''
-        this.inputs[index].remind = ''
-        this.$forceUpdate()
+        if(this.inputs[index].icon != 'el-icon-success'){
+          this.values[index] = ''
+          this.inputs[index].icon = ''
+          this.inputs[index].remind = ''
+          this.$forceUpdate()
+        }
       },
 			register(){
-        console.log(this.values)
+        this.registering = true
+        this.btnText = '注册中'
+        let ready = true
+        this.inputs.forEach(item => {
+          if(item.remind != '' || item.icon != 'el-icon-success')
+            ready = false
+        })
+        if(ready){
+          this.userInfo.username = this.values[0]
+          this.userInfo.phone = this.values[1]
+          this.userInfo.password = this.values[2]
+          this.$axios.post('/cloud_unite/user/register',this.userInfo)
+            .then(res => {
+              if(res.data.status === 200){
+                let data = {
+                  id : res.data.id,
+                  ...this.userInfo
+                }
+                delete data.password
+                localStorage.setItem("UserInfo",JSON.stringify(data))
+                global.Router(this,'myinfo')
+              }
+              else{
+                if(res.data.text === '该用户名已被使用'){
+                  this.inputs[0].icon = 'el-icon-error'
+                  this.inputs[0].remind = res.data.text
+                }
+                else{
+                  this.inputs[1].icon = 'el-icon-error'
+                  this.inputs[1].remind = res.data.text
+                }
+              }
+              this.registering = false
+              this.btnText = '注册'
+            })
+            .catch(err => {
+              console.log(err)
+              this.registering = false
+              this.btnText = '注册'
+            })
+        }
+        else{
+          this.registering = false
+          this.btnText = '注册'
+        }
 			}
 		},
     components:{
@@ -138,11 +246,15 @@
     margin: 10px 0;
     width: 100%;
     height: 35px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .register .input .err{
+    border-color: #F56C6C;
   }
   .register .input i{
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
     right: 30px;
     font-size: 20px;
     z-index: 10;
@@ -152,24 +264,16 @@
     color: #e91e1e;
     margin-left: 8%;
   }
-  .register .input .el-icon-error{
-    color: #F56C6C;
-    cursor: pointer;
-  }
-  .register .input .el-icon-success{
-    color: #67C23A;
-  }
-  .register .input .el-icon-circle-close{
-    color: #8b8b8b;
-    cursor: pointer;
-  }
-  .register .input .el-icon-circle-close:hover{
-    color: #6830d5;
-  }
 
   .register .btn{
     width: 200px;
-    text-align: center;
     margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .register .btn i{
+    position: absolute;
+    margin-left: 40px;
   }
 </style>
