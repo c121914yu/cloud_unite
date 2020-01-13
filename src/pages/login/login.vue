@@ -54,7 +54,7 @@
         class="phone"
       >
         <div class="input">
-          <input type="text" placeholder="手机号" v-model="phone">
+          <input type="text" placeholder="手机号" v-model="phone.value">
         </div>
         <div class="input" style="margin-left: 5%;">
           <getRand></getRand>
@@ -133,6 +133,8 @@
                 else if(res.data.status === 301)
                   this.RemindErr(this.password,'密码错误')
                 else if(res.data.status === 200){
+                  localStorage.removeItem("UserInfo")
+                  sessionStorage.removeItem("UserInfo")
                   if(this.save)
                     localStorage.setItem("UserInfo",JSON.stringify(res.data.userInfo))
                   else

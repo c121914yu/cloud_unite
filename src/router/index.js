@@ -26,9 +26,9 @@ export default new Router({
 
     {path: '/login',component:user,
       children:[
-        {path: '',name: 'login',component:login},
-        {path: 'findPsw',name: 'findPsw',component:findPsw},
-        {path: 'register',name: 'register',component:register},
+        {path: '',name: 'login',component:login,meta:{index:0}},
+        {path: 'findPsw',name: 'findPsw',component:findPsw,meta:{index:1}},
+        {path: 'register',name: 'register',component:register,meta:{index:1}},
       ]
     },
 

@@ -6,7 +6,7 @@
     </div>
 
     <div class="main">
-      <transition name="left">
+      <transition :name="slide_direction">
         <router-view class="content"></router-view>
       </transition>
     </div>
@@ -17,7 +17,15 @@
   export default{
     data(){
       return{
-        direction : 'slide-right'
+        slide_direction : 'slide-right'
+      }
+    },
+    watch:{
+      $route(to,from){
+        if(to.meta.index > from.meta.index)
+          this.slide_direction = 'slide-left'
+        else
+          this.slide_direction = 'slide-right'
       }
     }
   }
@@ -67,26 +75,50 @@
     height: 35px;
     background-color: rgba(235,235,235,0.7);
   }
-  .user .main .left-enter{
+  /* 左滑动*/
+  .user .main .slide-left-enter{
     transform:translateX(350px);
     opacity: 0.5;
   }
-  .user .main .left-enter-to{
+  .user .main .slide-left-enter-to{
     transform:translateX(0);
     opacity: 1;
   }
-  .user .main .left-enter-active{
+  .user .main .slide-left-enter-active{
     transition: 1s;
   }
-  .user .main .left-leave{
+  .user .main .slide-left-leave{
     transform:translateX(0);
     opacity: 1;
   }
-  .user .main .left-leave-to{
+  .user .main .slide-left-leave-to{
     transform:translateX(-350px);
     opacity: 0.5;
   }
-  .user .main.left-leave-active{
+  .user .main .slide-left-leave-active{
+    transition: 1s;
+  }
+  /* 右滑动*/
+  .user .main .slide-right-enter{
+    transform:translateX(-350px);
+    opacity: 0.5;
+  }
+  .user .main .slide-right-enter-to{
+    transform:translateX(0);
+    opacity: 1;
+  }
+  .user .main .slide-right-enter-active{
+    transition: 1s;
+  }
+  .user .main .slide-right-leave{
+    transform:translateX(0);
+    opacity: 1;
+  }
+  .user .main .slide-right-leave-to{
+    transform:translateX(350px);
+    opacity: 0.5;
+  }
+  .user .main .slide-right-leave-active{
     transition: 1s;
   }
 </style>

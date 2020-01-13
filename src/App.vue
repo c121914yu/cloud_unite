@@ -25,7 +25,9 @@ global.Message = (that,type,text) => {
   that.$message({
     message: text,
     type: type,
-    duration : 2000
+    duration : 2000,
+    center: true,
+    offset : 60
   });
 }
 </script>

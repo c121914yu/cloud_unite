@@ -54,7 +54,6 @@
 					baseInfo : '',
 					unitNumber : ''
 				},
-				SurePsw : '',
         registering : false,
         btnText : '注册'
 			}
@@ -179,9 +178,11 @@
                   ...this.userInfo
                 }
                 delete data.password
+                localStorage.removeItem("UserInfo")
+                sessionStorage.removeItem("UserInfo")
                 localStorage.setItem("UserInfo",JSON.stringify(data))
                 global.Router(this,'my')
-                global.Message(this,'success','登录成功')
+                global.Message(this,'success','注册成功')
               }
               else{
                 if(res.data.text === '该用户名已被使用'){

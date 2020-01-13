@@ -17,7 +17,6 @@
         :placeholder="item.placeholder"
         v-model="values[index]"
         @blur="InspectPsw(index)"
-        @change="AxiosInspect(index)"
         @input="inputing(index)"
       >
       <i v-if="item.icon" :class="item.icon" @click="clearText(index)"></i>
@@ -44,91 +43,24 @@
           {placeholder:'输入密码',icon:'',remind:'',type:'password'},
           {placeholder:'再次输入密码',icon:'',remind:'',type:'password'},
         ],
-        values : ['','','',''],
-				userInfo : {
-					username : '',
-					phone : '',
-					password : '',
-					email : '',
-					baseInfo : '',
-					unitNumber : ''
-				},
-				SurePsw : '',
+        values : ['','',''],
         finding : false,
         btnText : '修改'
 			}
 		},
 		methods:{
-      AxiosInspect(index){//检查用户名/手机号
-        let axiosInspect = (data) => {//请求
-          this.inputs[index].icon = 'el-icon-loading'
-          this.$axios.post('/cloud_unite/user/inspect',data)
-          .then(res => {
-            if(res.data.status === 200){
-              this.inputs[index].icon = 'el-icon-success'
-              this.inputs[index].remind = ''
-            }
-            else{
-              this.inputs[index].icon = 'el-icon-error'
-              this.inputs[index].remind = res.data.text
-            }
-          })
-          .catch(err => {
-            console.log(err)
-            this.inputs[index].icon = 'el-icon-error'
-            this.inputs[index].remind = '网络错误'
-          })
-        }
-        if(this.values[index] != ''){
-          const value = this.values[index]
-          let letter = /[a-z]/i;  //必须含字母，防止与手机号重叠
-          let NumLet = /^[0-9a-zA-Z]+$/  //只含字母跟数字
-          let phone = /^[1][3,4,5,7,8,9][0-9]{9}$/
-          //检查用户名
-          if(index === 0){
-            if(!letter.test(value)){
-              this.inputs[index].icon = 'el-icon-error'
-              this.inputs[index].remind = '用户名需包含字母'
-            }
-            else if(!NumLet.test(value)){
-              this.inputs[index].icon = 'el-icon-error'
-              this.inputs[index].remind = '用户名只能含字母跟数字'
-            }
-            else
-              axiosInspect({
-                type : 'username',
-                text : value
-              })
-          }
-          //检查手机号
-          else if(index === 1){
-      			if(!phone.test(value)){
-              this.inputs[index].icon = 'el-icon-error'
-              this.inputs[index].remind = '手机号格式错误'
-            }
-            else
-              axiosInspect({
-                type : 'phone',
-                text : value
-              })
-          }
-
-        }
-      },
       InspectPsw(index){
         if(this.values[index] != ''){
           //检查密码是否正确
           if(index === 1){
               if(this.values[index].length < 6){
-                this.inputs[index].icon = 'el-icon-error'
-                this.inputs[index].remind = '密码长度不能小于6位'
+                this.RemindErr(index,'密码长度不能小于6')
               }
               else{
                 this.inputs[index].icon = 'el-icon-success'
                 if(this.values[2] != ''){//判断二次密码是否一致
                   if(this.values[1] != this.values[2]){
-                    this.inputs[2].icon = 'el-icon-error'
-                    this.inputs[2].remind = '两次密码不一致'
+                    this.RemindErr(2,'两次密码不一致')
                   }
                   else{
                     this.inputs[2].icon = 'el-icon-success'
@@ -138,8 +70,7 @@
           //检查二次密码
           else if(index === 2){
             if(this.values[1] != this.values[2]){
-              this.inputs[2].icon = 'el-icon-error'
-              this.inputs[2].remind = '两次密码不一致'
+              this.RemindErr(2,'两次密码不一致')
             }
             else
               this.inputs[2].icon = 'el-icon-success'
@@ -159,52 +90,48 @@
         }
       },
 			findPsw(){
-        this.findPswing = true
-        this.btnText = '注册中'
-        let ready = true
-        this.inputs.forEach(item => {
-          if(item.remind != '' || item.icon != 'el-icon-success')
-            ready = false
+        this.finding = true
+        this.btnText = '修改中'
+        let ready = this.inputs.every(item => {
+          return item.remind === ''
         })
-        if(ready){
-          this.userInfo.username = this.values[0]
-          this.userInfo.phone = this.values[1]
-          this.userInfo.password = this.values[2]
-          this.$axios.post('/cloud_unite/user/findPsw',this.userInfo)
-            .then(res => {
-              if(res.data.status === 200){
-                let data = {
-                  id : res.data.id,
-                  ...this.userInfo
-                }
-                delete data.password
-                localStorage.setItem("UserInfo",JSON.stringify(data))
-                global.Router(this,'myinfo')
-              }
-              else{
-                if(res.data.text === '该用户名已被使用'){
-                  this.inputs[0].icon = 'el-icon-error'
-                  this.inputs[0].remind = res.data.text
-                }
-                else{
-                  this.inputs[1].icon = 'el-icon-error'
-                  this.inputs[1].remind = res.data.text
-                }
-              }
-              this.findPswing = false
-              this.btnText = '注册'
-            })
-            .catch(err => {
-              console.log(err)
-              this.findPswing = false
-              this.btnText = '注册'
-            })
+        if(this.values[0] === '')
+          this.RemindErr(0,'账号不能为空')
+        else if(this.values[1] === '')
+          this.RemindErr(1,'密码不能为空')
+        else if(this.SurePsw === '')
+          this.RemindErr(2,'请再次输入密码')
+        else if(ready){
+          const data = {
+            number : this.values[0],
+            NewPsw : this.values[1]
+          }
+          this.$axios.post('/cloud_unite/user/findPsw',data)
+          .then(res => {
+            if(res.data.status === 300)
+              this.RemindErr(0,res.data.text)
+            else{
+              this.finding = false
+              global.Router(this,'login')
+              global.Message(this,'success',res.data.text)
+            }
+          })
+          .catch(err => {
+            console.log(err)
+            global.Message(this,'warning','网络错误')
+          })
         }
         else{
-          this.findPswing = false
-          this.btnText = '注册'
+          this.finding = false
+          this.btnText = '修改'
         }
-			}
+			},
+      RemindErr(index,text){
+        this.finding = false
+        this.btnText = '修改'
+        this.inputs[index].icon = 'el-icon-error'
+        this.inputs[index].remind = text
+      }
 		},
     components:{
       getRand
