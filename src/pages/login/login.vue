@@ -116,38 +116,43 @@
       },
       login(){
         if(!this.logining){
-          if(this.number.value === '')
-             this.RemindErr(this.number,'账号不能为空')
-          else if(this.password.value === '')
-            this.RemindErr(this.password,'密码不能为空')
-          else{
-            this.logining = true
-            const data = {
-              number : this.number.value,
-              password : this.password.value
+          if(this.mode === 0){//密码登录
+            if(this.number.value === '')
+               this.RemindErr(this.number,'账号不能为空')
+            else if(this.password.value === '')
+              this.RemindErr(this.password,'密码不能为空')
+            else{
+              this.logining = true
+              const data = {
+                number : this.number.value,
+                password : this.password.value
+              }
+              this.$axios.post('/cloud_unite/user/login',data)
+                .then(res => {
+                  if(res.data.status === 300)
+                    this.RemindErr(this.number,'账号不存在')
+                  else if(res.data.status === 301)
+                    this.RemindErr(this.password,'密码错误')
+                  else if(res.data.status === 200){
+                    localStorage.removeItem("UserInfo")
+                    sessionStorage.removeItem("UserInfo")
+                    if(this.save)
+                      localStorage.setItem("UserInfo",JSON.stringify(res.data.userInfo))
+                    else
+                      sessionStorage.setItem('UserInfo',JSON.stringify(res.data.userInfo))
+                    global.Router(this,'my')
+                    global.Message(this,'success','登录成功')
+                  }
+                  this.logining = false
+                })
+                .catch(err => {
+                  console.log(err)
+                  this.logining = false
+                })
             }
-            this.$axios.post('/cloud_unite/user/login',data)
-              .then(res => {
-                if(res.data.status === 300)
-                  this.RemindErr(this.number,'账号不存在')
-                else if(res.data.status === 301)
-                  this.RemindErr(this.password,'密码错误')
-                else if(res.data.status === 200){
-                  localStorage.removeItem("UserInfo")
-                  sessionStorage.removeItem("UserInfo")
-                  if(this.save)
-                    localStorage.setItem("UserInfo",JSON.stringify(res.data.userInfo))
-                  else
-                    sessionStorage.setItem('UserInfo',JSON.stringify(res.data.userInfo))
-                  global.Router(this,'my')
-                  global.Message(this,'success','登录成功')
-                }
-                this.logining = false
-              })
-              .catch(err => {
-                console.log(err)
-                this.logining = false
-              })
+          }
+          else{//手机号登录
+            
           }
         }
       }

@@ -68,15 +68,12 @@
               this.inputs[index].icon = 'el-icon-success'
               this.inputs[index].remind = ''
             }
-            else{
-              this.inputs[index].icon = 'el-icon-error'
-              this.inputs[index].remind = res.data.text
-            }
+            else
+              this.RemindErr(index,res.data.text)
           })
           .catch(err => {
             console.log(err)
-            this.inputs[index].icon = 'el-icon-error'
-            this.inputs[index].remind = '网络错误'
+            global.Message(this,'error','网络错误')
           })
         }
         if(this.values[index] != ''){
@@ -86,14 +83,10 @@
           let phone = /^[1][3,4,5,7,8,9][0-9]{9}$/
           //检查用户名
           if(index === 0){
-            if(!letter.test(value)){
-              this.inputs[index].icon = 'el-icon-error'
-              this.inputs[index].remind = '用户名需包含字母'
-            }
-            else if(!NumLet.test(value)){
-              this.inputs[index].icon = 'el-icon-error'
-              this.inputs[index].remind = '用户名只能含字母跟数字'
-            }
+            if(!letter.test(value))
+              this.RemindErr(index,'用户名需包含字母')
+            else if(!NumLet.test(value))
+              this.RemindErr(index,'用户名只能含字母跟数字')
             else
               axiosInspect({
                 type : 'username',
@@ -102,10 +95,8 @@
           }
           //检查手机号
           else if(index === 1){
-      			if(!phone.test(value)){
-              this.inputs[index].icon = 'el-icon-error'
-              this.inputs[index].remind = '手机号格式错误'
-            }
+      			if(!phone.test(value))
+              this.RemindErr(index,'手机号格式错误')
             else
               axiosInspect({
                 type : 'phone',
@@ -119,17 +110,13 @@
         if(this.values[index] != ''){
           //检查密码是否正确
           if(index === 2){
-              if(this.values[index].length < 6){
-                this.inputs[index].icon = 'el-icon-error'
-                this.inputs[index].remind = '密码长度不能小于6位'
-              }
+              if(this.values[index].length < 6)
+                this.RemindErr(index,'密码长度不能小于6')
               else{
                 this.inputs[index].icon = 'el-icon-success'
                 if(this.values[3] != ''){//判断二次密码是否一致
-                  if(this.values[2] != this.values[3]){
-                    this.inputs[3].icon = 'el-icon-error'
-                    this.inputs[3].remind = '两次密码不一致'
-                  }
+                  if(this.values[2] != this.values[3])
+                    this.RemindErr(3,'两次密码不一致')
                   else{
                     this.inputs[3].icon = 'el-icon-success'
                     this.inputs[3].remind = ''}}
@@ -137,10 +124,8 @@
           }
           //检查二次密码
           else if(index === 3){
-            if(this.values[2] != this.values[3]){
-              this.inputs[3].icon = 'el-icon-error'
-              this.inputs[3].remind = '两次密码不一致'
-            }
+            if(this.values[2] != this.values[3])
+              this.RemindErr(3,'两次密码不一致')
             else
               this.inputs[3].icon = 'el-icon-success'
           }
@@ -161,8 +146,13 @@
 			register(){
         this.registering = true
         this.btnText = '注册中'
-        let ready = true
-        this.inputs.forEach(item => {
+        let ready = this.values.every((item,index) => {
+          console.log(item)
+          if(item === '')
+            this.RemindErr(index,'内容为空')
+          return item != ''
+        })
+        this.inputs.forEach((item,index) => {
           if(item.remind != '' || item.icon != 'el-icon-success')
             ready = false
         })
@@ -185,13 +175,10 @@
                 global.Message(this,'success','注册成功')
               }
               else{
-                if(res.data.text === '该用户名已被使用'){
-                  this.inputs[0].icon = 'el-icon-error'
-                  this.inputs[0].remind = res.data.text
-                }
+                if(res.data.text === '该用户名已被使用')
+                  this.RemindErr(0,res.data.text)
                 else{
-                  this.inputs[1].icon = 'el-icon-error'
-                  this.inputs[1].remind = res.data.text
+                  this.RemindErr(1,res.data.text)
                 }
               }
               this.registering = false
@@ -207,7 +194,13 @@
           this.registering = false
           this.btnText = '注册'
         }
-			}
+			},
+      RemindErr(index,text){
+        this.registering = false
+        this.btnText = '注册'
+        this.inputs[index].icon = 'el-icon-error'
+        this.inputs[index].remind = text
+      }
 		},
     components:{
       getRand
