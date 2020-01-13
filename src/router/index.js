@@ -41,7 +41,7 @@ export default new Router({
     {path: '/business',name: 'business',component: business},
     {path: '/circle',name: 'circle',component: circle},
 
-    {path: '/my',name: 'my',component: my,redirect:'/my/myworks',
+    {path: '/my',name: 'my',component: my,redirect:'/my/myinfo',
 			children:[
         {path: 'myworks',name: 'myworks',component: myworks},
 			  {path: 'upworks',name: 'upworks',component: upworks},

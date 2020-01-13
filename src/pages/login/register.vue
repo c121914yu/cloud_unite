@@ -180,7 +180,8 @@
                 }
                 delete data.password
                 localStorage.setItem("UserInfo",JSON.stringify(data))
-                global.Router(this,'myinfo')
+                global.Router(this,'my')
+                global.Message(this,'success','登录成功')
               }
               else{
                 if(res.data.text === '该用户名已被使用'){

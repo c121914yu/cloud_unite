@@ -77,14 +77,15 @@
     },
     beforeRouteEnter(to,from,next) {
       //进入管理界面时先判断登录
-      let UserInfo = JSON.parse(localStorage.getItem("UserInfo"))
+      let UserInfo = JSON.parse(localStorage.getItem("UserInfo")) || JSON.parse(sessionStorage.getItem("UserInfo"))
+      console.log(UserInfo)
       next(that => {
-        if(UserInfo){
+        if(UserInfo != null){
           //判断登录信息
           that.UserInfo = UserInfo
         }
         else{
-          global.Alert(that,'请先登录')
+          global.Message(that,'warning','请先登录')
           global.Router(that,'login')
         }
       })

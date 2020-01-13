@@ -73,6 +73,11 @@
           case 'circle' : index=4;break;
           case 'my' : index=7;break;
           case 'myworks' : index=7;break;
+          case 'upworks' : index=7;break;
+          case 'myinfo' : index=7;break;
+          case 'login' : index=7;break;
+          case 'findPsw' : index=7;break;
+          case 'register' : index=7;break;
         }
         let dom = document.getElementById('router').children[index]
         this.border_left = dom.offsetLeft / routerWidth * 100

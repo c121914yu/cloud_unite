@@ -15,14 +15,37 @@
       </span>
     </div>
 
-    <div class="input">
+    <div class="info">
       <!-- 密码登录 -->
       <div
         v-if="mode===0"
         class="psw"
       >
-        <input type="text" placeholder="用户名/手机号/邮箱" v-model="number">
-        <input type="password" placeholder="密码" v-model="password">
+        <div class="input">
+          <input
+            :class="number.err ? 'err':''"
+            type="text"
+            placeholder="用户名/手机号/邮箱"
+            v-model="number.value"
+            @input="number.err=false"
+          >
+          <i v-if="number.err" class="el-icon-error" @click="clearText(number)"></i>
+          <i v-else-if="number.value" class="el-icon-circle-close" @mousedown="clearText(number)"></i>
+          <p v-if="number.err" class="remind">{{number.remind}}</p>
+        </div>
+
+        <div class="input">
+          <input
+            :class="password.err ? 'err':''"
+            type="password"
+            placeholder="密码"
+            v-model="password.value"
+            @input="password.err=false"
+          >
+          <i v-if="password.err" class="el-icon-error" @click="clearText(password)"></i>
+          <i v-else-if="password.value" class="el-icon-circle-close" @mousedown="clearText(password)"></i>
+          <p v-if="password.err" class="remind">{{password.remind}}</p>
+        </div>
       </div>
 
       <!-- 短信登录 -->
@@ -30,11 +53,18 @@
         v-if="mode===1"
         class="phone"
       >
-        <input type="text" placeholder="手机号" v-model="phone">
-        <getRand></getRand>
+        <div class="input">
+          <input type="text" placeholder="手机号" v-model="phone">
+        </div>
+        <div class="input" style="margin-left: 5%;">
+          <getRand></getRand>
+        </div>
       </div>
 
-      <div class="btn">登录</div>
+      <div class="btn" @click="login">
+        登录
+        <i v-if="logining" class="el-icon-loading"></i>
+      </div>
     </div>
 
     <!-- 辅助登录功能 -->
@@ -65,12 +95,59 @@
   export default{
     data(){
       return{
-        mode : 1,
-        number : '',
-        password : '',
-        phone : '',
+        mode : 0,
+        number : {value:'',err:false,remind:''},
+        password : {value:'',err:false,remind:''},
+        phone : {value:'',err:false,remind:''},
         rand : '',
         save : false,
+        logining : false
+      }
+    },
+    methods:{
+      clearText(type){
+        type.value = ''
+        type.err = false
+        type.remind = ''
+      },
+      RemindErr(type,text){
+        type.err = true
+        type.remind = text
+      },
+      login(){
+        if(!this.logining){
+          if(this.number.value === '')
+             this.RemindErr(this.number,'账号不能为空')
+          else if(this.password.value === '')
+            this.RemindErr(this.password,'密码不能为空')
+          else{
+            this.logining = true
+            const data = {
+              number : this.number.value,
+              password : this.password.value
+            }
+            this.$axios.post('/cloud_unite/user/login',data)
+              .then(res => {
+                if(res.data.status === 300)
+                  this.RemindErr(this.number,'账号不存在')
+                else if(res.data.status === 301)
+                  this.RemindErr(this.password,'密码错误')
+                else if(res.data.status === 200){
+                  if(this.save)
+                    localStorage.setItem("UserInfo",JSON.stringify(res.data.userInfo))
+                  else
+                    sessionStorage.setItem('UserInfo',JSON.stringify(res.data.userInfo))
+                  global.Router(this,'my')
+                  global.Message(this,'success','登录成功')
+                }
+                this.logining = false
+              })
+              .catch(err => {
+                console.log(err)
+                this.logining = false
+              })
+          }
+        }
       }
     },
     components:{
@@ -83,7 +160,9 @@
   .login{
     position: relative;
   }
-
+  .login input{
+    margin-left: 5%;
+  }
   .login .nav{
     margin-top: 7px;
     margin-left: 10px;
@@ -108,23 +187,46 @@
     border-bottom: 2px solid #6830d5;
   }
 
-  .login .input{
+  .login .info{
     width: 100%;
   }
-  .login .input .btn{
-    width: 200px;
-    text-align: center;
-    margin: 0 auto;
-  }
-  .login .input .psw,.login .input .phone{
-    margin-top: 10px;
+  .login .info .input{
+    margin: 20px 0;
+    width: 100%;
+    height: 35px;
     display: flex;
-    flex-direction: column;
     align-items: center;
+    flex-wrap: wrap;
+  }
+  .login .info .input .err{
+    border-color: #F56C6C;
+  }
+  .login .info .input i{
+    position: absolute;
+    right: 30px;
+    font-size: 20px;
+    z-index: 10;
+  }
+  .login .info .input .remind{
+    font-size: 13px;
+    color: #e91e1e;
+    margin-left: 8%;
+  }
+
+  .login .info .btn{
+    margin: 0 auto;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .login .info i{
+    position: absolute;
+    margin-left: 35px;
   }
 
   .login .assist{
-    padding: 15px 5%;
+    padding: 10px 5%;
     display: flex;
     align-items: center;
   }

@@ -242,7 +242,7 @@
   }
 
   .findPsw .input{
-    margin: 10px 0;
+    margin: 15px 0;
     width: 100%;
     height: 35px;
     display: flex;

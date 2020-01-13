@@ -15,11 +15,11 @@ import '../static/element/index.css'
 import {
   Radio,
   RadioGroup,
-  Message,
   Popover,
   DatePicker,
   Select,
   Option,
+  Message,
   MessageBox} from 'element-ui'
 Vue.use(Radio)
    .use(RadioGroup)

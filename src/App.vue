@@ -21,6 +21,13 @@ global.Alert = (that,text) => {
     confirmButtonText: '确认'
   })
 }
+global.Message = (that,type,text) => {
+  that.$message({
+    message: text,
+    type: type,
+    duration : 2000
+  });
+}
 </script>
 
 <style>
