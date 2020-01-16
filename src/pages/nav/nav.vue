@@ -60,7 +60,8 @@
     },
     methods:{
       routerTo(index,name){
-        global.Router(this,name)
+        if(index != 5)
+          global.Router(this,name)
       },
       borderChange(){
         let routerWidth = document.getElementById('router').offsetWidth

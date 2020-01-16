@@ -34,10 +34,12 @@
 <style>
   .user{
     min-height: 100vh;
+    background: url(../../../static/loginBkg.jpg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #6830d5;
     letter-spacing: 1px;
     user-select:none;
   }

@@ -7,7 +7,7 @@ Vue.config.productionTip = false
 import axios from 'axios'
 Vue.prototype.$axios = axios//全局使用axios
 
-import './assets/icon/iconfont.css'//引入图标库
+import '../static/icon/iconfont.css'//引入图标库
 
 /* 使用ui库 */
 import '../static/element/index.css'

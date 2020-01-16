@@ -1,6 +1,6 @@
 <template>
   <div class="getrand">
-    <input type="text" placeholder="验证码">
+    <input type="text" placeholder="验证码" maxlength="6">
     <div
       class="get-rand"
       :class="time===0 ? 'ready' : 'wait'"

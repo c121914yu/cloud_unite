@@ -78,7 +78,6 @@
     beforeRouteEnter(to,from,next) {
       //进入管理界面时先判断登录
       let UserInfo = JSON.parse(localStorage.getItem("UserInfo")) || JSON.parse(sessionStorage.getItem("UserInfo"))
-      console.log(UserInfo)
       next(that => {
         if(UserInfo != null){
           //判断登录信息

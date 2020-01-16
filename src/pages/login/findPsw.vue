@@ -99,7 +99,7 @@
           this.RemindErr(0,'账号不能为空')
         else if(this.values[1] === '')
           this.RemindErr(1,'密码不能为空')
-        else if(this.SurePsw === '')
+        else if(this.values[2] === '')
           this.RemindErr(2,'请再次输入密码')
         else if(ready){
           const data = {
