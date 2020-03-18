@@ -1,7 +1,7 @@
 <template>
   <div class="navigation">
     <div @click="routerTo(0,'home')">
-      <img class="logo" src="../../assets/logo.png">
+      <img class="logo" src="../../static/logo.png">
     </div>
 
     <div class="nav" id="router">
@@ -52,10 +52,10 @@
     mounted(){
       this.borderChange()
       window.onresize = () => {
-          return (() => {
-              window.screenWidth = document.body.clientWidth
-              this.screenWidth = window.screenWidth
-          })()
+        return (() => {
+          window.screenWidth = document.body.clientWidth
+          this.screenWidth = window.screenWidth
+        })()
       }
     },
     methods:{

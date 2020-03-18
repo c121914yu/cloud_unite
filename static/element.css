@@ -1,0 +1,27 @@
+/* UI库颜色修改*/
+/* select样式 */
+.el-select .el-input__inner{
+  border-radius: 10px;
+}
+/* 气泡弹窗 */
+.el-popover{
+  padding: 5 12px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #a9a9a9;
+  border: none;
+}
+/* 图标颜色*/
+.el-icon-error{
+  color: #F56C6C;
+  cursor: pointer;
+}
+.el-icon-success{
+  color: #67C23A;
+}
+.el-icon-circle-close{
+  color: #8b8b8b;
+  cursor: pointer;
+}
+.el-icon-circle-close:hover{
+  color: #6830d5;
+}

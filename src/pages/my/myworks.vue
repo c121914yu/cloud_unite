@@ -57,15 +57,7 @@
       return{
         current : 2,
         words : [
-          {cover:'../../assets/logo.png',applied:true,readed:100,liked:50},
-          {cover:'../../assets/logo.png',applied:true,readed:100,liked:50},
-          {cover:'../../assets/logo.png',applied:false,readed:100,liked:50},
-          {cover:'../../assets/logo.png',applied:true,readed:100,liked:50},
-          {cover:'../../assets/logo.png',applied:false,readed:100,liked:50},
-          {cover:'../../assets/logo.png',applied:false,readed:100,liked:50},
-          {cover:'../../assets/logo.png',applied:true,readed:100,liked:50},
-          {cover:'../../assets/logo.png',applied:false,readed:100,liked:50},
-          {cover:'../../assets/logo.png',applied:true,readed:100,liked:50},
+          {cover:'@/static/logo.png',applied:true,readed:100,liked:50},
         ],
         pages : [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
         page : 1,
