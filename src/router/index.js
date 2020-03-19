@@ -10,28 +10,16 @@ import discover from '../pages/discover/discover'
 import business from '../pages/business/business'
 import circle from '../pages/circle/circle'
 
-import my from '../pages/my/my'
-import upworks from '../pages/my/upworks'
-import myworks from '../pages/my/myworks'
-import myinfo from '../pages/my/myinfo'
+import my from '../pages/selfInfo/my'
+import mywork from '../pages/selfInfo/works.vue'
+import upwork from '../pages/selfInfo/upwork.vue'
+import mydata from '../pages/selfInfo/info.vue'
 
-import user from '../pages/login/user.vue'
-import login from '../pages/login/login.vue'
-import findPsw from '../pages/login/findPsw.vue'
-import register from '../pages/login/register.vue'
+import login from '../pages/login.vue'
 
 export default new Router({
   routes: [
-    {path: '*',redirect:'/home'},//错误地址重新定向
-
-    {path: '/login',component:user,
-      children:[
-        {path: '',name: 'login',component:login,meta:{index:0}},
-        {path: 'findPsw',name: 'findPsw',component:findPsw,meta:{index:1}},
-        {path: 'register',name: 'register',component:register,meta:{index:1}},
-      ]
-    },
-
+    {path: '/login',name:"login",component:login,},
 
     {path: '/home',name: 'home',component: home},
 
@@ -41,13 +29,14 @@ export default new Router({
     {path: '/business',name: 'business',component: business},
     {path: '/circle',name: 'circle',component: circle},
 
-    {path: '/my',name: 'my',component: my,redirect:'/my/myinfo',
-			children:[
-        {path: 'myworks',name: 'myworks',component: myworks},
-			  {path: 'upworks',name: 'upworks',component: upworks},
-			  {path: 'myinfo',name: 'myinfo',component: myinfo},
-			]
-		},
+    {path: '/my',name: 'my',component: my,redirect:'/my/mywork',children:[
+      {path: 'mywork',name: 'mywork',component: mywork},
+      {path: 'upwork',name: 'upwork',component: upwork},
+      {path: 'mydata',name: 'mydata',component: mydata},
+    ]},
+    
+    {path: '*',redirect:'/home'},
   ],
-  linkActiveClass : "active" //设置选中导航的样式
+  mode : "history",
+  linkActiveClass : "currentNav" //设置选中导航的样式
 })

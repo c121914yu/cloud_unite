@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
 Vue.config.productionTip = false
+
+// 引入vuex
+import store  from './store.js'
 
 import axios from 'axios'
 Vue.prototype.$axios = axios//全局使用axios
@@ -11,7 +13,6 @@ import '../static/icon/iconfont.css'//引入图标库
 
 /* 使用ui库 */
 import '../static/element/index.css'
-
 import {
   Radio,
   RadioGroup,
@@ -38,5 +39,6 @@ Vue.prototype.$prompt = MessageBox.prompt;
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })

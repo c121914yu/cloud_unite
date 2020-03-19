@@ -6,13 +6,6 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "2970157",
-      "name": "查看",
-      "font_class": "chakan",
-      "unicode": "e631",
-      "unicode_decimal": 58929
-    },
-    {
       "icon_id": "5057918",
       "name": "QQ",
       "font_class": "QQ",
@@ -32,6 +25,13 @@
       "font_class": "weibo",
       "unicode": "e63f",
       "unicode_decimal": 58943
+    },
+    {
+      "icon_id": "2970157",
+      "name": "查看",
+      "font_class": "chakan",
+      "unicode": "e631",
+      "unicode_decimal": 58929
     },
     {
       "icon_id": "9921769",

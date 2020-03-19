@@ -1,6 +1,6 @@
 <template>
-  <div class="apple">
-    申请保护
+  <div class="info">
+    个人信息
   </div>
 </template>
 

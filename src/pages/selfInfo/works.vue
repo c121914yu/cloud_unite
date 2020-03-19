@@ -1,6 +1,6 @@
 <template>
-  <div class="manageworks">
-    作品管理
+  <div class="works">
+    我的作品
   </div>
 </template>
 

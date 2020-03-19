@@ -1,6 +1,6 @@
 <template>
-  <div>
-    保护
+  <div class="upwork">
+    上传作品
   </div>
 </template>
 

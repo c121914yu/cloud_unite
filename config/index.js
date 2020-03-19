@@ -10,12 +10,12 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/cloud_unite':{
-        target : 'http://localhost:4000/',
+      '/api':{
+        target : 'http://localhost:4000/api/',
         ws : true,
         changOrigin : true,
         pathRewrite : {
-          '^/cloud_unite' : ''
+          '^/api' : ''
         }
       }
     },
